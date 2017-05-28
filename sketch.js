@@ -15,12 +15,13 @@ var TAMANHO_JANELA;
 
 var PROBABILIDADE_LUZES = 0.3;
 
-var COR_FUNDO, COR_LUA, COR_LUA_RATO, COR_prédio, COR_LUZ;
+var COR_FUNDO, COR_LUA, COR_LUA_RATO, COR_PRÉDIO, COR_LUZ;
 
 var TAMANHO_RELATIVO_LUA = 0.12;
 var X_LUA_RELATIVO = 0.2;
 var Y_LUA_RELATIVO = 0.2;
 var X_LUA, Y_LUA;
+var TEXTO_RATO = 'Going to the moon';
 
 var TAMANHO_RELATIVO_JANELA = 0.03;
 var tamanhoJanela;
@@ -75,6 +76,17 @@ function prédio(x, largura, alturaRelativa, espaço, numLuzes, luzes)
 
 function prédios()
 {
+	// Atualizar que prédios ligam as luzes de 60 em 60 frames
+	// (aproximadamente um segundo)
+	if (frameCount % 61 === 1) {
+		luzes1 = random() < PROBABILIDADE_LUZES;
+		luzes2 = random() < PROBABILIDADE_LUZES;
+		luzes3 = random() < PROBABILIDADE_LUZES;
+		luzes4 = random() < PROBABILIDADE_LUZES;
+		luzes5 = random() < PROBABILIDADE_LUZES;
+		luzes6 = random() < PROBABILIDADE_LUZES;
+		luzes7 = random() < PROBABILIDADE_LUZES;
+	}
 	var xAnterior = 0;
 
 	// Prédio 1: tamanho 3
@@ -91,18 +103,6 @@ function prédios()
 	xAnterior = prédio(xAnterior + entrePrédio, larguraT2, 0.5, espaçoJanelaT2, 2, luzes6);
 	// Prédio 7: tamanho 2
 	xAnterior = prédio(xAnterior + entrePrédio, larguraT2, 0.3, espaçoJanelaT2, 2, luzes7);
-}
-
-function atualizarLuzes()
-{
-	luzes1 = random() < PROBABILIDADE_LUZES;
-	luzes2 = random() < PROBABILIDADE_LUZES;
-	luzes3 = random() < PROBABILIDADE_LUZES;
-	luzes4 = random() < PROBABILIDADE_LUZES;
-	luzes5 = random() < PROBABILIDADE_LUZES;
-	luzes6 = random() < PROBABILIDADE_LUZES;
-	luzes7 = random() < PROBABILIDADE_LUZES;
-	prédios();
 }
 
 function lua()
@@ -131,8 +131,6 @@ function lua()
 
 function calcularTamanhos()
 {
-	background(COR_FUNDO);
-
 	X_LUA = X_LUA_RELATIVO*width;
 	Y_LUA = Y_LUA_RELATIVO*height;
 
@@ -163,25 +161,29 @@ function setup()
 	COR_PRÉDIO = color(11, 11, 24);
 	COR_LUZ = color(228, 210, 117);
 
+	textFont("Quicksand");
+	textSize(20);
+
 	calcularTamanhos();
 	noStroke();
-
-	// Atualizar luzes dos prédios a cada segundo
-	atualizarLuzes();
-	setInterval(atualizarLuzes, 1000);
 }
 
 function draw()
 {
+	background(COR_FUNDO);
+
 	// Verificar se o rato está em cima da lua
 	lua();
+	prédios();
+
+	fill(0);
+	text(TEXTO_RATO, mouseX, mouseY);
 }
 
 function windowResized()
 {
 	resizeCanvas(windowWidth, windowHeight);
 
-	// Atualizar novo tamanho dos prédios
+	// Atualizar novos tamanhos
 	calcularTamanhos();
-	prédios();
 }
