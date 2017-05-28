@@ -15,111 +15,173 @@ var TAMANHO_JANELA;
 
 var PROBABILIDADE_LUZES = 0.3;
 
+var COR_FUNDO, COR_LUA, COR_LUA_RATO, COR_prédio, COR_LUZ;
+
 var TAMANHO_RELATIVO_LUA = 0.12;
-var l1, l2, l3, l4, l5, l6, l7;
+var X_LUA_RELATIVO = 0.2;
+var Y_LUA_RELATIVO = 0.2;
+var X_LUA, Y_LUA;
 
-function predio(x, largura, alturaRelativa, espaco, numLuzes, luzes)
+var TAMANHO_RELATIVO_JANELA = 0.03;
+var tamanhoJanela;
+
+var LARGURA_RELATIVA_T3 = 0.15;
+var LARGURA_RELATIVA_T2 = 0.10;
+var LARGURA_RELATIVA_T1 = 0.05;
+var larguraT1, larguraT2, larguraT1;
+var espaçoJanelaT3, espaçoJanelaT2, espaçoJanelaT1;
+
+var ENTRE_PRÉDIO_RELATIVO = 0.01;
+var ENTRE_PRÉDIO_GRANDE_RELATIVO = 0.13;
+var entrePrédio;
+var entrePrédioGrande;
+
+var PROBABILIDADE_LUZES = 0.3;
+var luzes1, luzes2, luzes3, luzes4, luzes5, luzes6, luzes7;
+
+
+function luz(x, alturaNegativa, espaço, numLuzes)
 {
-	var alturaReal = alturaRelativa*height;
-	var alturaNegativa = height - alturaRelativa*height;
-
-	fill(11, 11, 24);
-	rect(x, alturaNegativa, largura, alturaReal);
-
-	if (luzes) luz(x, alturaNegativa, espaco, numLuzes);
-
-	return x + largura;
-}
-
-function luz(x, alturaNegativa, espaco, numLuzes)
-{
-	fill(228, 210, 117);
+	fill(COR_LUZ);
 
 	var y;
 	var xJanela;
 	for (var andar = 0; ; andar++) {
-		y = alturaNegativa + espaco + andar*(espaco + TAMANHO_JANELA);
-		if (y >= height - espaco - TAMANHO_JANELA) break;
+		y = alturaNegativa + espaço + andar*(espaço + tamanhoJanela);
+		if (y >= height - espaço - tamanhoJanela) break;
 
-		xJanela = x + espaco;
+		xJanela = x + espaço;
 		for (var i = 0; i < numLuzes; i++) {
-			rect(xJanela, y, TAMANHO_JANELA, TAMANHO_JANELA);
-			xJanela += TAMANHO_JANELA + espaco;
+			// Janelas são quadrados
+			rect(xJanela, y, tamanhoJanela, tamanhoJanela);
+			xJanela += tamanhoJanela + espaço;
 		}
 	}
 }
 
-function predios()
+function prédio(x, largura, alturaRelativa, espaço, numLuzes, luzes)
+{
+	fill(COR_PRÉDIO);
+
+	var alturaReal = alturaRelativa*height;
+	var alturaNegativa = height - alturaRelativa*height;
+
+	rect(x, alturaNegativa, largura, alturaReal);
+
+	if (luzes) luz(x, alturaNegativa, espaço, numLuzes);
+
+	return x + largura;
+}
+
+function prédios()
 {
 	var xAnterior = 0;
 
-	if (frameCount % 61 === 1) l1 = random() < PROBABILIDADE_LUZES;
-	xAnterior = predio(0.01*width, LARGURA_P3, 0.6, ESPACO_JANELA_P3, 3, l1);
+	// Prédio 1: tamanho 3
+	xAnterior = prédio(entrePrédio, larguraT3, 0.6, espaçoJanelaT3, 3, luzes1);
+	// Prédio 2: tamanho 3
+	xAnterior = prédio(xAnterior + entrePrédio, larguraT3, 0.55, espaçoJanelaT3, 3, luzes2);
+	// Prédio 3: tamanho 1
+	xAnterior = prédio(xAnterior + entrePrédio, larguraT1, 0.4, espaçoJanelaT1, 1, luzes3);
+	// Prédio 4: tamamnho 3
+	xAnterior = prédio(xAnterior + entrePrédio, larguraT3, 0.33, espaçoJanelaT3, 3, luzes4);
+	// Prédio 5: tamanho 2
+	xAnterior = prédio(xAnterior + entrePrédioGrande, larguraT2, 0.4, espaçoJanelaT2, 2, luzes5);
+	// Prédio 6: tamanho 2
+	xAnterior = prédio(xAnterior + entrePrédio, larguraT2, 0.5, espaçoJanelaT2, 2, luzes6);
+	// Prédio 7: tamanho 2
+	xAnterior = prédio(xAnterior + entrePrédio, larguraT2, 0.3, espaçoJanelaT2, 2, luzes7);
+}
 
-	if (frameCount % 61 === 1) l2 = random() < PROBABILIDADE_LUZES;
-	xAnterior = predio(xAnterior + 0.01*width, LARGURA_P3, 0.55, ESPACO_JANELA_P3, 3, l2);
-
-	if (frameCount % 61 === 1) l3 = random() < PROBABILIDADE_LUZES;
-	xAnterior = predio(xAnterior + 0.01*width, LARGURA_P1, 0.4, ESPACO_JANELA_P1, 1, l3);
-
-	if (frameCount % 61 === 1) l4 = random() < PROBABILIDADE_LUZES;
-	xAnterior = predio(xAnterior + 0.01*width, LARGURA_P3, 0.33, ESPACO_JANELA_P3, 3, l4);
-
-	if (frameCount % 61 === 1) l5 = random() < PROBABILIDADE_LUZES;
-	xAnterior = predio(xAnterior + 0.13*width, LARGURA_P2, 0.4, ESPACO_JANELA_P2, 2, l5);
-
-	if (frameCount % 61 === 1) l6 = random() < PROBABILIDADE_LUZES;
-	xAnterior = predio(xAnterior + 0.01*width, LARGURA_P2, 0.5, ESPACO_JANELA_P2, 2, l6);
-
-	if (frameCount % 61 === 1) l7 = random() < PROBABILIDADE_LUZES;
-	xAnterior = predio(xAnterior + 0.01*width, LARGURA_P2, 0.3, ESPACO_JANELA_P2, 2, l7);
+function atualizarLuzes()
+{
+	luzes1 = random() < PROBABILIDADE_LUZES;
+	luzes2 = random() < PROBABILIDADE_LUZES;
+	luzes3 = random() < PROBABILIDADE_LUZES;
+	luzes4 = random() < PROBABILIDADE_LUZES;
+	luzes5 = random() < PROBABILIDADE_LUZES;
+	luzes6 = random() < PROBABILIDADE_LUZES;
+	luzes7 = random() < PROBABILIDADE_LUZES;
+	prédios();
 }
 
 function lua()
 {
-	fill(224, 232, 247);
-	ellipseMode(RADIUS);
-
+	var crescerDimensão;
 	if (height < width) {
-		if (dist(0.2*width, 0.2*height, mouseX, mouseY) < TAMANHO_RELATIVO_LUA*height) {
-			fill(162, 168, 179);
-		}
-		ellipse(0.2*width, 0.2*height, TAMANHO_RELATIVO_LUA*height);
+		crescerDimensão = height;
 	} else {
-		if (dist(0.2*width, 0.2*height, mouseX, mouseY) < TAMANHO_RELATIVO_LUA*width) {
-			fill(162, 168, 179);
-		}
-		ellipse(0.2*width, 0.2*height, TAMANHO_RELATIVO_LUA*width);
+		crescerDimensão = width;
 	}
+
+	// Apagar lua antiga
+	fill(COR_FUNDO);
+	ellipseMode(RADIUS);
+	ellipse(X_LUA, Y_LUA, TAMANHO_RELATIVO_LUA*crescerDimensão);
+
+	// Se rato em cima da lua, mudar de cor
+	if (dist(X_LUA, Y_LUA, mouseX, mouseY) < TAMANHO_RELATIVO_LUA*crescerDimensão) {
+		fill(COR_LUA_RATO);
+	} else {
+		fill(COR_LUA);
+	}
+
+	ellipse(X_LUA, Y_LUA, TAMANHO_RELATIVO_LUA*crescerDimensão);
+}
+
+function calcularTamanhos()
+{
+	background(COR_FUNDO);
+
+	X_LUA = X_LUA_RELATIVO*width;
+	Y_LUA = Y_LUA_RELATIVO*height;
+
+	larguraT3 = LARGURA_RELATIVA_T3*width;
+	larguraT2 = LARGURA_RELATIVA_T2*width;
+	larguraT1 = LARGURA_RELATIVA_T1*width;
+
+	tamanhoJanela = TAMANHO_RELATIVO_JANELA*width;
+
+	// Prédio3: 3 janelas, 4 espaços por fila
+	espaçoJanelaT3 = (larguraT3 - 3*tamanhoJanela) / 4
+	// Prédio2: 2 janelas, 3 espçcos por fila
+	espaçoJanelaT2 = (larguraT2 - 2*tamanhoJanela) / 3
+	// Prédio1: 1 janela, 2 espaços por fila
+	espaçoJanelaT1 = (larguraT1 - 1*tamanhoJanela) / 2
+
+	entrePrédio = ENTRE_PRÉDIO_RELATIVO*width;
+	entrePrédioGrande = ENTRE_PRÉDIO_GRANDE_RELATIVO*width;
 }
 
 function setup()
 {
 	createCanvas(windowWidth, windowHeight);
+
+	COR_FUNDO = color(27, 49, 86);
+	COR_LUA = color(224, 232, 247);
+	COR_LUA_RATO = color(162, 168, 179);
+	COR_PRÉDIO = color(11, 11, 24);
+	COR_LUZ = color(228, 210, 117);
+
+	calcularTamanhos();
 	noStroke();
+
+	// Atualizar luzes dos prédios a cada segundo
+	atualizarLuzes();
+	setInterval(atualizarLuzes, 1000);
 }
 
 function draw()
 {
-	LARGURA_P3 = LARGURA_RELATIVA_P3*width;
-	LARGURA_P2 = LARGURA_RELATIVA_P2*width;
-	LARGURA_P1 = LARGURA_RELATIVA_P1*width;
-
-	TAMANHO_JANELA = LARGURA_RELATIVA_JANELA*width;
-
-	// 3 janelas, 4 espacos
-	ESPACO_JANELA_P3 = (LARGURA_P3 - 3*TAMANHO_JANELA) / 4
-	// 2 janelas, 3 espacos
-	ESPACO_JANELA_P2 = (LARGURA_P2 - 2*TAMANHO_JANELA) / 3
-	// 1 janela, 2 espacos
-	ESPACO_JANELA_P1 = (LARGURA_P1 - 1*TAMANHO_JANELA) / 2
-
-	background(27, 49, 86);
-	predios();
+	// Verificar se o rato está em cima da lua
 	lua();
 }
 
 function windowResized()
 {
 	resizeCanvas(windowWidth, windowHeight);
+
+	// Atualizar novo tamanho dos prédios
+	calcularTamanhos();
+	prédios();
 }
