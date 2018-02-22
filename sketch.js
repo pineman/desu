@@ -1,20 +1,3 @@
-var LARGURA_RELATIVA_P3 = 0.15;
-var LARGURA_RELATIVA_P2 = 0.10;
-var LARGURA_RELATIVA_P1 = 0.05;
-
-var LARGURA_P3;
-var LARGURA_P2;
-var LARGURA_P1;
-
-var ESPACO_JANELA_P3;
-var ESPACO_JANELA_P2;
-var ESPACO_JANELA_P1;
-
-var LARGURA_RELATIVA_JANELA = 0.03;
-var TAMANHO_JANELA;
-
-var PROBABILIDADE_LUZES = 0.3;
-
 var COR_FUNDO, COR_LUA, COR_LUA_RATO, COR_PRÉDIO, COR_LUZ;
 
 var TAMANHO_RELATIVO_LUA = 0.12;
@@ -39,7 +22,6 @@ var entrePrédioGrande;
 
 var PROBABILIDADE_LUZES = 0.3;
 var luzes1, luzes2, luzes3, luzes4, luzes5, luzes6, luzes7;
-
 
 function luz(x, alturaNegativa, espaço, numLuzes)
 {
